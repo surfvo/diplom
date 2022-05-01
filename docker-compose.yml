@@ -1,0 +1,56 @@
+version: '3.1'
+
+
+services:
+#  parking_bot:
+#    container_name: parking_bot
+#    restart: unless-stopped
+#    build:
+#      context: ./
+#      dockerfile: Dockerfile
+#    depends_on:
+#      - parking_redis
+#    networks:
+#      - app-network
+#    command: sh -c "python3 main.py"
+
+  parking_redis:
+    container_name: parking_redis
+    image: "redis:alpine"
+    ports:
+      - "6379:6379"
+    command: redis-server --requirepass password
+    volumes:
+      - ./dbdata/redis:/var/lib/redis
+    networks:
+      - app-network
+
+#  parking_postgres:
+#    container_name: parking_postgres
+#    hostname: postgresql
+#    image: postgres:14-alpine
+#    restart: unless-stopped
+#    environment:
+#      POSTGRES_USER: postgres
+#      POSTGRES_PASSWORD: postgres
+#      POSTGRES_DB: upark
+#    volumes:
+#      - parking_postgres:/var/lib/postgresql/data
+#      - ./migrations/migration.sql:/docker-entrypoint-initdb.d/migration.sql
+#    ports:
+#      - "5431:5432"
+#    networks:
+#      - app-network
+
+
+networks:
+  app-network:
+    driver: bridge
+
+volumes:
+  parking_postgres:
+    driver: local
+  parking_redis:
+    driver: local
+  parking_bot:
+    driver: local
